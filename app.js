@@ -1,15 +1,17 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+// import express, favicon, bodyParser and other dependencies
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
 const session = require('express-session');
 const passport = require('passport');
 
 const index = require('./routes/index');
 const authRoutes = require('./routes/auth.js');
-const userRoutes = require('./routes/user.js');
+const userRoutes = require('./routes/users.js');
 const app = express();
 
 // load environment variables
@@ -22,8 +24,10 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+// add new express-session and passport middleware here
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
@@ -31,18 +35,13 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cookieParser());
-app.use(require('node-sass-middleware')({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: false,
-  sourceMap: true
-}));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
+// add route middleware here
 app.use('/', index);
 app.use('/auth', authRoutes);
-app.use('/users', userRoutes);
+app.use('/user', userRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -63,3 +62,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+

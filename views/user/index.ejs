@@ -1,0 +1,78 @@
+<% include ../partials/head.ejs %>
+  <body>
+    <% include ../partials/header.ejs %>
+    <main>
+      <div class="container">
+        <p>Hello, <%= user.firstName %>!</p>
+        <!-- p><%= user.firstName %></p>
+        <p><%= user.lastName %></p>
+        <p><%= user.email %></p>
+        <p><%= user.dob %></p> -->
+        <a href="/auth/logout">LOG OUT</a>
+      </div>
+      <div class="container">
+      <div class="carousel carousel-slider center indigo" data-indicators="true">
+
+        <% places.map(function(place) { %>
+          <div class="carousel-item white-text" href="#one!">
+              <style>
+            .carousel-item {
+              background-image: url("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="<%= place[4] %>"place&key=")
+            }
+          </style>
+            <h1><%= place[0] %></h1>
+            <h4><%= place[1] %></h4>
+            <% if(place[2] === true) { %>
+                <p>Open Now</p>
+                <% } else { %>
+                  <p>Closed Now</p>
+                  <% } %>
+                <% if(place[3] === 1) { %>
+                <p>$</p>
+                <% } else if(place[3] === 2) { %>
+                  <p>$$</p>
+                  <% } else if(place[3] === 3) { %>
+                    <p>$$$</p>
+                    <% } else if(place[3] === 4) { %>
+                      <p>$$$$</p>
+                    <% } else { %>
+                      <p>No Price Info</p>
+                      <% } %>
+                </div>
+              <% }) %>
+
+          </div>
+        </div>
+
+        <div class="container">
+        <h3>My Google Maps Demo</h3>
+        <div id="map"></div>
+
+        <!-- <script>
+
+           function initMap() {
+            var userLocation = {lat: 39.800138, lng: -75.534868};
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 10,
+              center: userLocation
+            });
+
+            var locations = <%= locations %>
+                console.log(locations)
+            var marker = new google.maps.Marker({
+              position: userLocation,
+              map: map
+            });
+
+          }
+        </script>
+
+        <script async defer
+           src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+        </script> -->
+
+        </div>
+      </main>
+    <% include ../partials/footer.ejs %>
+  </body>
+</html>
