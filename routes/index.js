@@ -7,12 +7,12 @@ router.get('/', function(req, res, next) {
 
   res.render('index', { title: 'Express' });
 });
-router.patch('/', apiHelpers.getPlaces, (req,res) => {
-  console.log("router", req.body.lat)
-  res.status(200).send({
-    latitude: req.body.lat,
-    longitude: req.body.lng
-  })
-});
+// router.patch('/', apiHelpers.getPlaces, (req,res) => {
+//   console.log("router", req.body.lat)
+//   res.status(200).send({
+//     latitude: req.body.lat,
+//     longitude: req.body.lng
+//   })
+// });
 
 module.exports = router;

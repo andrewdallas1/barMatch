@@ -7,9 +7,8 @@ function comparePass(userPassword, databasePassword) {
 }
 
 function loginRedirect(req, res, next) {
-  if (req.user) return res.status(401).json(
-    { status: 'You are already logged in' }
-  );
+  if (req.user) return res.redirect('/user')
+
 
   return next();
 }
@@ -27,12 +26,12 @@ function createUser(req, res) {
     dob: req.body.dob,
     gender: req.body.gender
   }).then(() => {
-    res.redirect('/');
+    res.redirect('/user');
   });
 }
 
 function loginRequired(req, res, next) {
-  if (!req.user) return res.status(401).json({ status: 'Please log in' });
+  if (!req.user) return res.redirect('/auth/login')
 
   return next();
 }

@@ -3,23 +3,15 @@
     <% include ../partials/header.ejs %>
     <main>
       <div class="container">
-        <p>Hello, <%= user.firstName %>!</p>
-        <!-- p><%= user.firstName %></p>
-        <p><%= user.lastName %></p>
-        <p><%= user.email %></p>
-        <p><%= user.dob %></p> -->
-        <a href="/auth/logout">LOG OUT</a>
+        <h3 class="white-text">Hello, <%= user.firstName %>!</h3>
+
       </div>
       <div class="container">
-      <div class="carousel carousel-slider center indigo" data-indicators="true">
+      <div class="carousel carousel-slider center black" data-indicators="false">
 
         <% places.map(function(place) { %>
-          <div class="carousel-item white-text" href="#one!">
-              <style>
-            .carousel-item {
-              background-image: url("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="<%= place[4] %>"place&key=")
-            }
-          </style>
+          <div class="carousel-item white-text">
+
             <h1><%= place[0] %></h1>
             <h4><%= place[1] %></h4>
             <% if(place[2] === true) { %>
@@ -38,6 +30,23 @@
                     <% } else { %>
                       <p>No Price Info</p>
                       <% } %>
+                    <% if(place[4] < 2) { %>
+                      <h6>&#9734;</h6>
+                    <% } else if(place[4] < 3) { %>
+                      <h6>&#9734;&#9734;/h6>
+                    <% } else if(place[4] < 4) { %>
+                      <h6>&#9734;&#9734;&#9734;</h6>
+                    <% } else if(place[4] < 5) { %>
+                      <h6>&#9734;&#9734;&#9734;&#9734;</h6>
+                      <% }else if(place[4] === 5) { %>
+                      <h6>&#9734;&#9734;&#9734;&#9734;&#9734;</h6>
+                      <% } %>
+                      <form action="/user" method="POST">
+                        <input type="hidden" name="user_id" value="<%= user.id %>"/>
+                        <input type="hidden" name="bar_name" value="<%= place[0] %>"/>
+                        <input type="hidden" name="bar_address" value="<%= place[1] %>"/>
+                        <input type="submit" class="black" value="Add to faves?" />
+                      </form>
                 </div>
               <% }) %>
 
@@ -45,31 +54,61 @@
         </div>
 
         <div class="container">
-        <h3>My Google Maps Demo</h3>
         <div id="map"></div>
 
-        <!-- <script>
+        <script>
 
            function initMap() {
-            var userLocation = {lat: 39.800138, lng: -75.534868};
+            var userLocation = {lat: 40.7410986, lng: -73.9888682};
             var map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 10,
+              zoom: 16,
               center: userLocation
             });
-
-            var locations = <%= locations %>
-                console.log(locations)
+            var locations = [ [ 'Almond', 40.740081, -73.9887509, 1 ],
+  [ 'The Clocktower', 40.7412504, -73.9875224, 2 ],
+  [ 'Obicà Mozzarella Bar Pizza e Cucina - NY Flatiron',
+    40.7401187,
+    -73.9893507,
+    3 ],
+  [ 'Flatiron Wines & Spirits', 40.7402783, -73.9897403, 4 ],
+  [ 'Manzo', 40.74208699999999, -73.989634, 5 ],
+  [ 'Nutella Bar', 40.7420207, -73.98992799999999, 6 ],
+  [ 'Osteria del Principe', 40.7407563, -73.98731529999999, 7 ],
+  [ 'La Birreria', 40.7421115, -73.9898855, 8 ],
+  [ 'Tablelist Social Club NYC', 40.7417433, -73.99049029999999, 9 ],
+  [ 'Sagaponack Bar & Grill', 40.7409426, -73.9907772, 10 ],
+  [ 'Giorgio\'s of Gramercy', 40.739614, -73.9887346, 11 ],
+  [ 'Mangia', 40.74172199999999, -73.990672, 12 ],
+  [ 'Society Billiards + Bar', 40.7398848, -73.9900818, 13 ],
+  [ 'Punch Bar & Grill', 40.7396272, -73.989859, 14 ],
+  [ 'Wined Up', 40.7396272, -73.989859, 15 ],
+  [ 'Almayass', 40.73944040000001, -73.98901649999999, 16 ],
+  [ 'Bo\'s Kitchen and Bar Room',
+    40.74248499999999,
+    -73.990352,
+    17 ],
+  [ 'Garden District', 40.742531, -73.99032590000002, 18 ],
+  [ 'Harding\'s', 40.7392836, -73.9887809, 19 ],
+  [ 'The 40/40 Club', 40.742975, -73.98927599999999, 20 ] ];
+              var infowindow = new google.maps.InfoWindow();
+              for(let i = 0; i < locations.length; i++) {
             var marker = new google.maps.Marker({
-              position: userLocation,
+              position: new google.maps.LatLng(locations[i][1], locations[i][2]),
               map: map
             });
-
+              google.maps.event.addListener(marker, 'click', (function(marker, i) {
+              return function() {
+                infowindow.setContent(locations[i][0]);
+                infowindow.open(map, marker);
+              }
+            })(marker, i));
+          }
           }
         </script>
 
         <script async defer
            src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
-        </script> -->
+        </script>
 
         </div>
       </main>

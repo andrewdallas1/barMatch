@@ -5,7 +5,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
+const sassMiddleware = require('node-sass-middleware');
 const session = require('express-session');
 const passport = require('passport');
 
@@ -28,11 +28,20 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // add new express-session and passport middleware here
+app.use(
+     sassMiddleware({
+         src: __dirname + '/public',
+         dest: __dirname + '/public',
+         debug: true,
+     })
+  );
+
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: true
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
